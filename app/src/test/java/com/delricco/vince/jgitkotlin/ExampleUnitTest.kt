@@ -1,4 +1,4 @@
-package com.delricco.vince.gittest
+package com.delricco.vince.jgitkotlin
 
 import org.junit.Test
 

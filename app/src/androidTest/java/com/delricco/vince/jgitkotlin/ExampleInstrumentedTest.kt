@@ -1,4 +1,4 @@
-package com.delricco.vince.gittest
+package com.delricco.vince.jgitkotlin
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

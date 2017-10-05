@@ -1,4 +1,4 @@
-package com.delricco.vince.gittest
+package com.delricco.vince.jgitkotlin
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
