@@ -1,7 +1,8 @@
 package com.delricco.vince.jgitkotlin
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.Status
 import java.io.File
@@ -20,38 +21,42 @@ class MainActivity : AppCompatActivity() {
         val file = File(applicationContext.filesDir, "testrepo")
 
         // create the directory
+        appendInfo("Initializing git repo...")
         val git = Git.init().setDirectory(file).call()
-        println("Repository lives here: " + git.repository.directory)
-        println("Current branch is: " + git.repository.branch)
+        appendInfo("Repository lives here: ${git.repository.directory}")
+        appendInfo("Current branch is: ${git.repository.branch}")
 
+        appendInfo("Creating test file and adding to our git repo...")
         val file1 = File(file, "testfile")
         file1.writeText("Hello World!")
-        println(file1.absolutePath)
+        appendInfo("File created: ${file1.absolutePath}")
 
         git.add().addFilepattern(".").call()
-        git.printStatusInfo()
+        appendInfo(git.getStatusInfo())
 
         git.close()
         file1.delete()
         file.deleteRecursively()
     }
 
-    fun Git.printStatusInfo() {
-        status().call().printInfo()
+    fun appendInfo(string: String) {
+        println(string)
+        tvGitOutput.append("$string\n")
     }
 
-    fun Status.printInfo() {
-        println("Added: " + added)
-        println("Changed: " + changed)
-        println("Conflicting: " + conflicting)
-        println("Conflicting State State: " + conflictingStageState)
-        println("Ignored Not In Index: " + ignoredNotInIndex)
-        println("Is Clean: " + isClean)
-        println("Missing: " + missing)
-        println("Modified: " + modified)
-        println("Removed: " + removed)
-        println("Uncommitted Changes: " + uncommittedChanges)
-        println("Untracked: " + untracked)
-        println("Untracked Folders: " + untrackedFolders)
-    }
+    fun Git.getStatusInfo() = status().call().getInfo()
+
+    fun Status.getInfo() =
+        "Added: $added\n" +
+        "Changed: $changed\n" +
+        "Conflicting: $conflicting\n" +
+        "Conflicting State State: $conflictingStageState\n" +
+        "Ignored Not In Index: $ignoredNotInIndex\n" +
+        "Is Clean: $isClean\n" +
+        "Missing: $missing\n" +
+        "Modified: $modified\n" +
+        "Removed: $removed\n" +
+        "Uncommitted Changes: $uncommittedChanges\n" +
+        "Untracked: $untracked\n" +
+        "Untracked Folders: $untrackedFolders\n"
 }
